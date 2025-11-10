@@ -1,0 +1,12 @@
+<IfModule mod_headers.c>
+  Header set Content-Security-Policy "
+    default-src 'self' data: blob:;
+    script-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' data: blob:;
+    media-src 'self' https://exterafans.github.io;
+    connect-src 'self';
+    frame-ancestors 'self';
+  "
+</IfModule>
