@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Запрещенные слова</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body, html {
+      height: 100%;
+      width: 100%;
+      background: #1a1a1a;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      cursor: pointer;
+    }
+
+    .overlay p {
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    .message {
+      max-width: 900px;
+      text-align: left;
+      line-height: 1.5;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px 30px;
+      border-radius: 15px;
+      font-size: 16px;
+      display: none;
+      z-index: 1;
+    }
+
+    .line {
+      opacity: 0;
+      transform: translateY(-20px);
+      animation: fadeInUp 0.6s forwards;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Начальный экран-предупреждение -->
+  <div class="overlay" id="overlay">
+    <p>
+      Внимание, в этом разделе присутствуют множественные слова с нецензурной бранью и запретные слова для некоторых площадок (в том числе и Twitch).<br><br>
+      Пожалуйста, убедитесь что вам есть больше 16 лет для просмотра данного контента.<br><br>
+      <strong>Нажмите, чтобы продолжить</strong>
+    </p>
+  </div>
+
+  <!-- Основное сообщение -->
+  <div class="message" id="message">
+    <div class="line" style="animation-delay: 0s"><strong>Запрещенные слова (их нельзя писать, за попытку обхода слов - бан):</strong></div>
+    <div class="line" style="animation-delay: 0.3s">xyesos, ссанина, подхалим, червь, гнилушка, хуекрут, залупоглазый, пидрила, ебарь, шкура, вонючка, падаль, крысеныш, душнила, мухосранец, заднеприводный, скупердяй, бомжара, пахан, задрот, сопляк, дрищ, вафлер, вафел, гомик, чухонец, скотина, блевотина, куколд, дерьмецо, мусор, отброс, подонок, чепух, мудак, кретин, тупица, шизик, нарик, алкаш, проститутка, клоун, таракан, клоп, крыса, свиноматка, козёл, овца, баран, мразота, путин, пидорас, пидор, гей, негр, нигер, фемка, инцел, хуесос, еблан, долбоеб, уебан, гондон, шлюха, блядь, мразь, тварь, сука, чмо, чурка, гнида, жирдяй, ссыкло, урод, дегенерат, даун, дебил, обмудок, петух, мамкин-программист, лох, сосунок, залупа, ебырь, шалава, дерьмо, говноед, мамбет, свинья, хуйло, чухан, обоссанец, параша, гавно, вшивый, плебей, грязнуля, шизоид.</div>
+  </div>
+
+  <script>
+    const overlay = document.getElementById('overlay');
+    const message = document.getElementById('message');
+
+    overlay.addEventListener('click', () => {
+      overlay.style.display = 'none';
+      message.style.display = 'block';
+    });
+  </script>
+
+</body>
+</html>
