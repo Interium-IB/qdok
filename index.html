@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Стартовый экран -->
   <div id="start-screen">
     <div class="start-content">
       <h1>Привет</h1>
@@ -15,14 +14,11 @@
     </div>
   </div>
 
-  <!-- Видео фон -->
   <video id="bg-video" loop muted>
     <source src="https://sus.qdok.ru/upsetsummer/background.mp4" type="video/mp4" />
   </video>
 
-  <!-- Основной контент -->
   <div class="content hidden">
-    <!-- Профиль -->
     <div class="profile-card">
       <img src="https://sus.qdok.ru/upsetsummer/avatar.jpg" alt="avatar" class="avatar" />
       <div class="profile-info">
@@ -49,7 +45,6 @@
       </div>
     </div>
 
-<!-- Ссылки -->
 <div class="links">
   <a href="https://t.me/chilavekrazzz" target="_blank" class="link">
     <img src="https://sus.qdok.ru/upsetsummer/icons/telegram.svg" alt="Telegram" class="icon"/>
@@ -75,9 +70,7 @@
 </div>
   </div>
 
-  <!-- Музыкальная панель -->
   <div class="music-player hidden">
-    <!-- Play/Pause -->
     <button id="play-btn">
       <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24">
         <path d="M8 5v14l11-7z"/>
@@ -87,7 +80,6 @@
       </svg>
     </button>
 
-    <!-- Track info и полоса трека -->
     <div class="track-wrapper">
       <div class="track-info">
         <p class="track-title">Мои глаза сияют</p>
@@ -96,7 +88,6 @@
       <input type="range" id="track-slider" min="0" max="100" step="1" value="0">
     </div>
 
-    <!-- Громкость и mute -->
     <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.2">
     <button id="mute-btn">
       <svg id="sound-on" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24">
@@ -106,7 +97,6 @@
         <path d="M16.5 12L19 9.5 17.59 8.09 15.09 10.59 12.59 8.09 11.18 9.5 13.68 12 11.18 14.5 12.59 15.91 15.09 13.41 17.59 15.91 19 14.5 16.5 12zM3 9v6h4l5 5V4L7 9H3z"/>
       </svg>
     </button>
-<!-- Постоянное время трека -->
 <div class="track-time">0:00 / 0:00</div>
   </div>
 
@@ -117,19 +107,15 @@
     const content = document.querySelector('.content');
     const audio = document.getElementById('bg-music');
     const video = document.getElementById('bg-video');
-
     const volumeSlider = document.getElementById('volume-slider');
     const muteBtn = document.getElementById('mute-btn');
     const soundOn = document.getElementById('sound-on');
     const soundOff = document.getElementById('sound-off');
-
     const playBtn = document.getElementById('play-btn');
     const playIcon = document.getElementById('play-icon');
     const pauseIcon = document.getElementById('pause-icon');
     const trackSlider = document.getElementById('track-slider');
-
     const musicPlayer = document.querySelector('.music-player');
-
     let isMuted = false;
     let isPlaying = false;
 
@@ -148,28 +134,17 @@
       }, 700);
     });
 
-    // Play/Pause
     playBtn.addEventListener('click', () => {
-      if(isPlaying){
-        audio.pause();
-      } else {
-        audio.play();
-      }
+      if(isPlaying){ audio.pause(); } else { audio.play(); }
       isPlaying = !isPlaying;
       updatePlayIcons();
     });
 
     function updatePlayIcons(){
-      if(isPlaying){
-        playIcon.style.display = 'none';
-        pauseIcon.style.display = 'block';
-      } else {
-        playIcon.style.display = 'block';
-        pauseIcon.style.display = 'none';
-      }
+      if(isPlaying){ playIcon.style.display='none'; pauseIcon.style.display='block'; }
+      else { playIcon.style.display='block'; pauseIcon.style.display='none'; }
     }
 
-    // Mute
     muteBtn.addEventListener('click', () => {
       isMuted = !isMuted;
       audio.muted = isMuted;
@@ -177,111 +152,73 @@
     });
 
     function updateMuteIcons(){
-      if(isMuted){
-        soundOn.style.display = 'none';
-        soundOff.style.display = 'block';
-      } else {
-        soundOn.style.display = 'block';
-        soundOff.style.display = 'none';
-      }
+      if(isMuted){ soundOn.style.display='none'; soundOff.style.display='block'; }
+      else { soundOn.style.display='block'; soundOff.style.display='none'; }
     }
 
-    // Volume slider
-    volumeSlider.addEventListener('input', () => {
-      if(!isMuted) audio.volume = volumeSlider.value;
-    });
+    volumeSlider.addEventListener('input', () => { if(!isMuted) audio.volume = volumeSlider.value; });
+    trackSlider.addEventListener('input', () => { audio.currentTime = (trackSlider.value/100)*audio.duration; });
+    audio.addEventListener('timeupdate', () => { trackSlider.value=(audio.currentTime/audio.duration)*100; });
 
-    // Track slider
-    trackSlider.addEventListener('input', () => {
-      audio.currentTime = (trackSlider.value / 100) * audio.duration;
+    document.addEventListener('DOMContentLoaded', () => {
+      const icons = document.querySelectorAll('.role-icon, .verified-icon');
+      const tooltip = document.createElement('div');
+      tooltip.classList.add('tooltip');
+      document.body.appendChild(tooltip);
+      icons.forEach(icon => {
+        icon.addEventListener('mouseenter', () => {
+          tooltip.textContent = icon.dataset.role;
+          tooltip.classList.add('show');
+          const rect = icon.getBoundingClientRect();
+          tooltip.style.left = rect.left + rect.width/2 + 'px';
+          tooltip.style.top = rect.top - 20 + 'px';
+        });
+        icon.addEventListener('mouseleave', () => { tooltip.classList.remove('show'); });
+      });
     });
 
     audio.addEventListener('timeupdate', () => {
-      trackSlider.value = (audio.currentTime / audio.duration) * 100;
+      const progress=(audio.currentTime/audio.duration)*100;
+      trackSlider.value=progress;
+      trackSlider.style.background=`linear-gradient(to right,#ff4b4b ${progress}%,rgba(255,255,255,0.25) ${progress}%)`;
     });
 
-    // Role tooltips
-document.addEventListener('DOMContentLoaded', () => {
-  const icons = document.querySelectorAll('.role-icon, .verified-icon');
-  const tooltip = document.createElement('div');
-  tooltip.classList.add('tooltip');
-  document.body.appendChild(tooltip);
-
-  icons.forEach(icon => {
-    icon.addEventListener('mouseenter', () => {
-      tooltip.textContent = icon.dataset.role;
-      tooltip.classList.add('show');
-      const rect = icon.getBoundingClientRect();
-      // Фиксируем подсказку над значком
-      tooltip.style.left = rect.left + rect.width / 2 + 'px';
-      tooltip.style.top = rect.top - 20 + 'px';
+    volumeSlider.addEventListener('input', () => {
+      const val=volumeSlider.value*100;
+      volumeSlider.style.background=`linear-gradient(to right,#ff4b4b ${val}%,rgba(255,255,255,0.25) ${val}%)`;
+      if(!isMuted) audio.volume = volumeSlider.value;
     });
 
-    icon.addEventListener('mouseleave', () => {
-      tooltip.classList.remove('show');
+    const trackTime = document.querySelector('.track-time');
+    audio.addEventListener('timeupdate', () => {
+      trackSlider.value=(audio.currentTime/audio.duration)*100;
+      const minutes=Math.floor(audio.currentTime/60);
+      const seconds=Math.floor(audio.currentTime%60).toString().padStart(2,'0');
+      const totalMinutes=Math.floor(audio.duration/60);
+      const totalSeconds=Math.floor(audio.duration%60).toString().padStart(2,'0');
+      trackTime.textContent=`${minutes}:${seconds} / ${totalMinutes}:${totalSeconds}`;
     });
 
-    // Убираем обработчик mousemove, который двигал подсказку
-    // icon.addEventListener('mousemove', ... ) больше не нужен
-  });
-});
+    const timeTooltip = document.createElement('div');
+    timeTooltip.className='time-tooltip';
+    document.body.appendChild(timeTooltip);
 
-// === Обновление цвета прогресс-бара ===
-audio.addEventListener('timeupdate', () => {
-  const progress = (audio.currentTime / audio.duration) * 100;
-  trackSlider.value = progress;
-  trackSlider.style.background = `linear-gradient(to right, #ff4b4b ${progress}%, rgba(255,255,255,0.25) ${progress}%)`;
-});
+    trackSlider.addEventListener('mousemove', e => {
+      if(!audio.duration) return;
+      const rect=trackSlider.getBoundingClientRect();
+      const percent=Math.min(Math.max((e.clientX-rect.left)/rect.width,0),1);
+      const hoverTime=percent*audio.duration;
+      const minutes=Math.floor(hoverTime/60);
+      const seconds=Math.floor(hoverTime%60).toString().padStart(2,'0');
+      const totalMinutes=Math.floor(audio.duration/60);
+      const totalSeconds=Math.floor(audio.duration%60).toString().padStart(2,'0');
+      timeTooltip.textContent=`${minutes}:${seconds} / ${totalMinutes}:${totalSeconds}`;
+      timeTooltip.style.left=`${e.clientX}px`;
+      timeTooltip.style.top=`${rect.top-28}px`;
+      timeTooltip.classList.add('show');
+    });
 
-// === Обновление цвета громкости ===
-volumeSlider.addEventListener('input', () => {
-  const val = volumeSlider.value * 100;
-  volumeSlider.style.background = `linear-gradient(to right, #ff4b4b ${val}%, rgba(255,255,255,0.25) ${val}%)`;
-  if (!isMuted) audio.volume = volumeSlider.value;
-});
-
-const trackTime = document.querySelector('.track-time');
-
-// Обновляем текущее время постоянно
-audio.addEventListener('timeupdate', () => {
-  trackSlider.value = (audio.currentTime / audio.duration) * 100;
-
-  const minutes = Math.floor(audio.currentTime / 60);
-  const seconds = Math.floor(audio.currentTime % 60).toString().padStart(2, '0');
-
-  const totalMinutes = Math.floor(audio.duration / 60);
-  const totalSeconds = Math.floor(audio.duration % 60).toString().padStart(2, '0');
-
-  trackTime.textContent = `${minutes}:${seconds} / ${totalMinutes}:${totalSeconds}`;
-});
-
-// Подсказка при наведении (fade + slide up)
-const timeTooltip = document.createElement('div');
-timeTooltip.className = 'time-tooltip';
-document.body.appendChild(timeTooltip);
-
-trackSlider.addEventListener('mousemove', e => {
-  if (!audio.duration) return;
-  const rect = trackSlider.getBoundingClientRect();
-  const percent = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
-  const hoverTime = percent * audio.duration;
-
-  const minutes = Math.floor(hoverTime / 60);
-  const seconds = Math.floor(hoverTime % 60).toString().padStart(2, '0');
-  const totalMinutes = Math.floor(audio.duration / 60);
-  const totalSeconds = Math.floor(audio.duration % 60).toString().padStart(2, '0');
-
-  timeTooltip.textContent = `${minutes}:${seconds} / ${totalMinutes}:${totalSeconds}`;
-  timeTooltip.style.left = `${e.clientX}px`;
-  timeTooltip.style.top = `${rect.top - 28}px`;
-  timeTooltip.classList.add('show');
-});
-
-trackSlider.addEventListener('mouseleave', () => {
-  timeTooltip.classList.remove('show');
-});
-
-
-</script>
+    trackSlider.addEventListener('mouseleave', () => { timeTooltip.classList.remove('show'); });
+  </script>
 </body>
 </html>
