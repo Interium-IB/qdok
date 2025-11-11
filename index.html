@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <div id="start-screen">
     <div class="start-content">
       <h1>Привет</h1>
@@ -14,15 +15,13 @@
     </div>
   </div>
 
-  <video id="bg-video" loop muted>
-    <source src="https://sus.qdok.ru/upsetsummer/background.mp4" type="video/mp4" />
-  </video>
+  <div id="bg-video"></div>
 
   <div class="content hidden">
     <div class="profile-card">
       <img src="https://sus.qdok.ru/upsetsummer/avatar.jpg" alt="avatar" class="avatar" />
       <div class="profile-info">
-        <div class="roles-wrapper">
+        <div class="roles">
           <span class="role-icon" data-role="Administrator">
             <img src="https://sus.qdok.ru/upsetsummer/icons/admin.png" alt="Administrator" />
           </span>
@@ -64,7 +63,7 @@
       <a href="https://last.fm/user/upsetsummer" target="_blank" class="link">
         <img src="https://sus.qdok.ru/upsetsummer/icons/lastfm.svg" alt="LastFM" class="icon"/>
       </a>
-      <a href="https://qdok.ru/efans" target="_blank" class="link exterafans" title="ExteraFans">
+      <a href="https://sus.qdok.ru/upsetsummer/exterafans.png" target="_blank" class="link exterafans">
         <img src="https://sus.qdok.ru/upsetsummer/exterafans.png" alt="ExteraFans" />
       </a>
     </div>
@@ -72,14 +71,9 @@
 
   <div class="music-player hidden">
     <button id="play-btn">
-      <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M8 5v14l11-7z"/>
-      </svg>
-      <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24" style="display:none;">
-        <path d="M6 19h4V5H6zm8-14v14h4V5z"/>
-      </svg>
+      <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24"><path d="M8 5v14l11-7z"/></svg>
+      <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24" style="display:none;"><path d="M6 19h4V5H6zm8-14v14h4V5z"/></svg>
     </button>
-
     <div class="track-wrapper">
       <div class="track-info">
         <p class="track-title">Мои глаза сияют</p>
@@ -87,15 +81,10 @@
       </div>
       <input type="range" id="track-slider" min="0" max="100" step="1" value="0">
     </div>
-
     <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.2">
     <button id="mute-btn">
-      <svg id="sound-on" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24">
-        <path d="M3 9v6h4l5 5V4L7 9H3z"/>
-      </svg>
-      <svg id="sound-off" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24" style="display:none;">
-        <path d="M16.5 12L19 9.5 17.59 8.09 15.09 10.59 12.59 8.09 11.18 9.5 13.68 12 11.18 14.5 12.59 15.91 15.09 13.41 17.59 15.91 19 14.5 16.5 12zM3 9v6h4l5 5V4L7 9H3z"/>
-      </svg>
+      <svg id="sound-on" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24"><path d="M3 9v6h4l5 5V4L7 9H3z"/></svg>
+      <svg id="sound-off" xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" width="24" height="24" style="display:none;"><path d="M16.5 12L19 9.5 17.59 8.09 15.09 10.59 12.59 8.09 11.18 9.5 13.68 12 11.18 14.5 12.59 15.91 15.09 13.41 17.59 15.91 19 14.5 16.5 12zM3 9v6h4l5 5V4L7 9H3z"/></svg>
     </button>
     <div class="track-time">0:00 / 0:00</div>
   </div>
@@ -106,7 +95,7 @@
     const startScreen = document.getElementById('start-screen');
     const content = document.querySelector('.content');
     const audio = document.getElementById('bg-music');
-    const video = document.getElementById('bg-video');
+    const bg = document.getElementById('bg-video');
     const volumeSlider = document.getElementById('volume-slider');
     const muteBtn = document.getElementById('mute-btn');
     const soundOn = document.getElementById('sound-on');
@@ -120,19 +109,17 @@
     let isMuted = false;
     let isPlaying = false;
 
+    bg.style.background = "url('https://sus.qdok.ru/upsetsummer/background.png') no-repeat center center/cover";
+
     startScreen.addEventListener('click', () => {
-      startScreen.classList.add('fade-out');
-      setTimeout(() => {
-        startScreen.style.display = 'none';
-        content.classList.remove('hidden');
-        content.classList.add('fade-in');
-        musicPlayer.classList.remove('hidden');
-        video.play().catch(()=>{});
-        audio.volume = 0.2;
-        audio.play().catch(()=>{});
-        isPlaying = true;
-        updatePlayIcons();
-      },700);
+      startScreen.style.display = 'none';
+      content.classList.remove('hidden');
+      content.classList.add('fade-in');
+      audio.volume = 0.2;
+      audio.play().catch(()=>{});
+      isPlaying = true;
+      updatePlayIcons();
+      musicPlayer.classList.remove('hidden');
     });
 
     playBtn.addEventListener('click', () => {
@@ -142,15 +129,15 @@
     });
 
     function updatePlayIcons(){
-      playIcon.style.display = isPlaying ? 'none':'block';
-      pauseIcon.style.display = isPlaying ? 'block':'none';
+      playIcon.style.display = isPlaying ? 'none' : 'block';
+      pauseIcon.style.display = isPlaying ? 'block' : 'none';
     }
 
     muteBtn.addEventListener('click', () => {
       isMuted = !isMuted;
       audio.muted = isMuted;
-      soundOn.style.display = isMuted ? 'none':'block';
-      soundOff.style.display = isMuted ? 'block':'none';
+      soundOn.style.display = isMuted ? 'none' : 'block';
+      soundOff.style.display = isMuted ? 'block' : 'none';
     });
 
     volumeSlider.addEventListener('input', () => {
@@ -159,54 +146,58 @@
       volumeSlider.style.background = `linear-gradient(to right, #ff4b4b ${val}%, rgba(255,255,255,0.25) ${val}%)`;
     });
 
-    trackSlider.addEventListener('input', ()=> audio.currentTime=(trackSlider.value/100)*audio.duration);
-    audio.addEventListener('timeupdate', ()=>{
-      const progress=(audio.currentTime/audio.duration)*100;
-      trackSlider.value=progress;
-      trackSlider.style.background=`linear-gradient(to right, #ff4b4b ${progress}%, rgba(255,255,255,0.25) ${progress}%)`;
-      const minutes=Math.floor(audio.currentTime/60);
-      const seconds=Math.floor(audio.currentTime%60).toString().padStart(2,'0');
-      const totalMinutes=Math.floor(audio.duration/60);
-      const totalSeconds=Math.floor(audio.duration%60).toString().padStart(2,'0');
-      document.querySelector('.track-time').textContent=`${minutes}:${seconds} / ${totalMinutes}:${totalSeconds}`;
+    trackSlider.addEventListener('input', ()=>{ audio.currentTime = (trackSlider.value/100)*audio.duration; });
+
+    audio.addEventListener('timeupdate', () => {
+      const progress = (audio.currentTime/audio.duration)*100;
+      trackSlider.value = progress;
+      trackSlider.style.background = `linear-gradient(to right, #ff4b4b ${progress}%, rgba(255,255,255,0.25) ${progress}%)`;
+
+      const minutes = Math.floor(audio.currentTime/60);
+      const seconds = Math.floor(audio.currentTime%60).toString().padStart(2,'0');
+      const totalMinutes = Math.floor(audio.duration/60);
+      const totalSeconds = Math.floor(audio.duration%60).toString().padStart(2,'0');
+      document.querySelector('.track-time').textContent = `${minutes}:${seconds} / ${totalMinutes}:${totalSeconds}`;
     });
 
-    document.addEventListener('DOMContentLoaded', ()=>{
-      const icons=document.querySelectorAll('.role-icon');
-      const tooltip=document.createElement('div');
+    document.addEventListener('DOMContentLoaded', () => {
+      const icons = document.querySelectorAll('.role-icon');
+      const tooltip = document.createElement('div');
       tooltip.classList.add('tooltip');
       document.body.appendChild(tooltip);
-      icons.forEach(icon=>{
+
+      icons.forEach(icon => {
         icon.addEventListener('mouseenter', ()=>{
-          tooltip.textContent=icon.dataset.role;
+          tooltip.textContent = icon.dataset.role;
           tooltip.classList.add('show');
-          const rect=icon.getBoundingClientRect();
-          tooltip.style.left=rect.left+rect.width/2+'px';
-          tooltip.style.top=rect.top-20+'px';
+          const rect = icon.getBoundingClientRect();
+          tooltip.style.left = rect.left+rect.width/2+'px';
+          tooltip.style.top = rect.top-20+'px';
         });
-        icon.addEventListener('mouseleave', ()=>tooltip.classList.remove('show'));
+        icon.addEventListener('mouseleave', ()=>{ tooltip.classList.remove('show'); });
       });
     });
 
-    const timeTooltip=document.createElement('div');
-    timeTooltip.className='time-tooltip';
+    const timeTooltip = document.createElement('div');
+    timeTooltip.className = 'time-tooltip';
     document.body.appendChild(timeTooltip);
-    trackSlider.addEventListener('mousemove', e=>{
+
+    trackSlider.addEventListener('mousemove', e => {
       if(!audio.duration) return;
-      const rect=trackSlider.getBoundingClientRect();
-      const percent=Math.min(Math.max((e.clientX-rect.left)/rect.width,0),1);
-      const hoverTime=percent*audio.duration;
-      const minutes=Math.floor(hoverTime/60);
-      const seconds=Math.floor(hoverTime%60).toString().padStart(2,'0');
-      const totalMinutes=Math.floor(audio.duration/60);
-      const totalSeconds=Math.floor(audio.duration%60).toString().padStart(2,'0');
-      timeTooltip.textContent=`${minutes}:${seconds} / ${totalMinutes}:${totalSeconds}`;
-      timeTooltip.style.left=`${e.clientX}px`;
-      timeTooltip.style.top=`${rect.top-28}px`;
+      const rect = trackSlider.getBoundingClientRect();
+      const percent = Math.min(Math.max((e.clientX-rect.left)/rect.width,0),1);
+      const hoverTime = percent*audio.duration;
+      const minutes = Math.floor(hoverTime/60);
+      const seconds = Math.floor(hoverTime%60).toString().padStart(2,'0');
+      const totalMinutes = Math.floor(audio.duration/60);
+      const totalSeconds = Math.floor(audio.duration%60).toString().padStart(2,'0');
+      timeTooltip.textContent = `${minutes}:${seconds} / ${totalMinutes}:${totalSeconds}`;
+      timeTooltip.style.left = `${e.clientX}px`;
+      timeTooltip.style.top = `${rect.top-28}px`;
       timeTooltip.classList.add('show');
     });
-    trackSlider.addEventListener('mouseleave', ()=>timeTooltip.classList.remove('show'));
+
+    trackSlider.addEventListener('mouseleave', ()=>{ timeTooltip.classList.remove('show'); });
   </script>
 </body>
 </html>
-
