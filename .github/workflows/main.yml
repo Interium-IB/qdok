@@ -39,8 +39,25 @@ jobs:
 
     - name: Prepare deployment structure
       run: |
-        mkdir -p $GITHUB_WORKSPACE/deploy/efans
-        cp -r dist/* $GITHUB_WORKSPACE/deploy/efans/
+        mkdir -p $GITHUB_WORKSPACE/deploy
+        
+        # Копируем корневые файлы
+        cp $GITHUB_WORKSPACE/index.html $GITHUB_WORKSPACE/deploy/
+        cp $GITHUB_WORKSPACE/style.css $GITHUB_WORKSPACE/deploy/
+        cp $GITHUB_WORKSPACE/favicon.ico $GITHUB_WORKSPACE/deploy/ || true
+        cp $GITHUB_WORKSPACE/CNAME $GITHUB_WORKSPACE/deploy/ || true
+        cp $GITHUB_WORKSPACE/LICENSE $GITHUB_WORKSPACE/deploy/ || true
+        
+        # Копируем собранный efans (dist уже содержит правильную структуру с base='/efans/')
+        cp -r dist $GITHUB_WORKSPACE/deploy/efans
+        
+        # Копируем другие директории
+        if [ -d "$GITHUB_WORKSPACE/exterafans" ]; then
+          cp -r $GITHUB_WORKSPACE/exterafans $GITHUB_WORKSPACE/deploy/
+        fi
+        if [ -d "$GITHUB_WORKSPACE/exteragram" ]; then
+          cp -r $GITHUB_WORKSPACE/exteragram $GITHUB_WORKSPACE/deploy/
+        fi
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
