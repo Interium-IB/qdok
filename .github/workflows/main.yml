@@ -41,6 +41,25 @@ jobs:
       run: |
         mkdir -p $GITHUB_WORKSPACE/deploy/efans
         cp -r dist/* $GITHUB_WORKSPACE/deploy/efans/
+        
+        # Copy root files
+        cp $GITHUB_WORKSPACE/index.html $GITHUB_WORKSPACE/deploy/
+        cp $GITHUB_WORKSPACE/style.css $GITHUB_WORKSPACE/deploy/
+        
+        # Copy .htaccess if exists in root
+        if [ -f $GITHUB_WORKSPACE/.htaccess ]; then
+          cp $GITHUB_WORKSPACE/.htaccess $GITHUB_WORKSPACE/deploy/
+        fi
+        
+        # Copy exterafans directory
+        if [ -d $GITHUB_WORKSPACE/exterafans ]; then
+          cp -r $GITHUB_WORKSPACE/exterafans $GITHUB_WORKSPACE/deploy/
+        fi
+        
+        # Copy exteragram directory
+        if [ -d $GITHUB_WORKSPACE/exteragram ]; then
+          cp -r $GITHUB_WORKSPACE/exteragram $GITHUB_WORKSPACE/deploy/
+        fi
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
