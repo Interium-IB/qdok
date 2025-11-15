@@ -77,13 +77,13 @@ const InfoContent = () => (
         <span>Телеграм exteraFans</span>
       </a>
       <a
-        href="https://t.me/exteraGram"
+        href="https://t.me/extrafansbot"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-3 p-4 glass-button rounded-xl hover:scale-105 transition-transform"
       >
         <ExternalLink className="w-5 h-5 text-green-500" />
-        <span>Бот exteraGram</span>
+        <span>Бот exteraFans</span>
       </a>
     </motion.div>
 
@@ -469,5 +469,6 @@ function App() {
     </div>
   )
 }
+
 
 export default App
